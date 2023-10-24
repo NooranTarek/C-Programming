@@ -1,0 +1,164 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <windows.h>
+#include <conio.h>
+
+#define right_key 77
+#define left_key 75
+#define up_key 72
+#define down_key 80
+#define enter_key 13
+
+#define maximum 100
+//notes
+///extern is a keyword to access global variable in main into file .c
+//use static word before function to force that not all people can access it
+int totalStudents = 0;
+
+struct student {
+    unsigned char name[10];
+    unsigned char gender;
+    unsigned char age;
+    signed long id;
+};
+int scan_struct_Students(struct student s[]);
+int print_struct_Students(struct student s[]);
+
+void SetColor(int ForgC);
+void gotoxy(int x, int y);
+
+int main() {
+    char character;
+    int position = 1;
+    int totalOptions = 3;
+    char flag = 'N';
+    struct student students[maximum];
+    int result=0;
+
+    while (flag != 'y' && flag != 'Y') {
+        system("cls");
+        for (int i = 1; i <= totalOptions; i++) {
+            gotoxy(10, 10 + i);
+            if (i == position) {
+                SetColor(4); // Red
+            } else {
+                SetColor(15); // White
+            }
+
+            switch (i) {
+                case 1:
+                    printf("New \n \n ");
+                    break;
+                case 2:
+                    printf("Display \n \n ");
+                    break;
+                case 3:
+                    printf("Exit \n \n ");
+                    break;
+            }
+        }
+
+        character = getch();
+        if (character == -32) {
+            char character1 = getch();
+            switch (character1) {
+                case left_key:
+                case up_key:
+                    position--;
+                    if (position < 1) {
+                        position = 3;
+                    }
+                    break;
+                case right_key:
+                case down_key:
+                    position++;
+                    if (position > totalOptions) {
+                        position = 1;
+                    }
+                    break;
+            }
+        } else if (character == enter_key) {
+            system("cls");
+            switch (position) {
+                case 1:
+                    result = scan_struct_Students(students);
+                    totalStudents++;
+                    break;
+                case 2:
+                    result = print_struct_Students(students);
+                    getch();
+                    break;
+                case 3:
+                    gotoxy(5, 10);
+                    printf("Exit");
+                    printf("If you want to exit, press 'y' or 'Y\n");
+                    flag = getch();
+                    break;
+            }
+            printf("\n");
+        }
+    }
+
+    return 0;
+}
+
+int scan_struct_Students(struct student s[]) {
+    int i;
+    for (i=0; i < maximum; i++) {
+        printf("Enter name [%d]: ", i + 1);
+        scanf("%s", s[i].name);
+        printf("Enter age [%d]: ", i + 1);
+        while (scanf("%ld", &s[i].age) != 1) {
+            clearBuffer();
+            printf("Invalid input. Enter age [%d]: ", i + 1);
+        }
+        //scanf("%ld", &s[i].age);
+        printf("Enter ID [%d]: ", i + 1);
+        while (scanf("%ld", &s[i].id) != 1) {
+            clearBuffer();
+            printf("Invalid input. Enter ID [%d]: ", i + 1);
+        }
+        //scanf("%ld", &s[i].id);
+        printf("Enter Gender [%d]: ", i + 1);
+        scanf(" %c", &s[i].gender);
+        printf("if you want to add another student press y if not press n? (y/n): ");
+        char add = getch();
+        if (add != 'y' && add != 'Y') {
+            break;
+        }
+    }
+    return i;
+}
+void clearBuffer() {
+    int ch;
+    while ((ch = getchar()) != '\n' && ch != EOF);
+}
+int print_struct_Students(struct student s[]) {
+    printf("----------------- Display -------------------- \n");
+    for (int i = 0; i <= totalStudents; i++) {
+        printf("Student [%d] = %s \n", i + 1, s[i].name);
+        printf("Gender [%d] = %c \n", i + 1, s[i].gender);
+        printf("Age [%d] = %d \n", i + 1, s[i].age);
+        printf("ID [%d] = %ld \n", i + 1, s[i].id);
+        printf("\n");
+    }
+    return totalStudents;
+}
+
+void SetColor(int ForgC) {
+    HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    WORD wColor;
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+
+    if (GetConsoleScreenBufferInfo(hStdOut, &csbi)) {
+        wColor = (csbi.wAttributes & 0xF0) + (ForgC & 0x0F);
+        SetConsoleTextAttribute(hStdOut, wColor);
+    }
+}
+
+void gotoxy(int x, int y) {
+    COORD coord = {0, 0};
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}

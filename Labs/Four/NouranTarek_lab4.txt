@@ -1,0 +1,329 @@
+- Calculate average of each column in a 2D Array.
+#include <stdio.h>
+#include <stdlib.h>
+
+
+
+int main() {
+    int rows, columns;
+
+    printf("Enter the number of rows: ");
+    scanf("%d", &rows);
+
+    printf("Enter the number of columns: ");
+    scanf("%d", &columns);
+
+    int array[rows][columns];
+
+    // Input elements into the 2D array
+    printf("Enter elements of the array:\n");
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns; j++) {
+            scanf("%d", &array[i][j]);
+        }
+    }
+
+    // Calculate the sum for each column
+    int columnSum[columns];
+    for (int j = 0; j < columns; j++) {
+        columnSum[j] = 0;
+        for (int i = 0; i < rows; i++) {
+            columnSum[j] += array[i][j];
+        }
+    }
+
+    // Calculate the average for each column and print the results
+    printf("Average of each column:\n");
+    for (int j = 0; j < columns; j++) {
+        double columnAverage = (double)columnSum[j] / rows;
+        printf("Column %d: %.2lf\n", j + 1, columnAverage);
+    }
+
+    return 0;
+}
+____________________________________________________________________________________________________________________________________________________________
+- C Program to add two matrix and put the result in a third one, then print the result.
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int rows, columns;
+    printf("enter the number of rows and columns for the matrices: ");
+    scanf("%d %d", &rows, &columns);
+    int matrix1[rows][columns], matrix2[rows][columns], result[rows][columns];
+    printf("enter elements of the first matrix:\n");
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns; j++) {
+            scanf("%d", &matrix1[i][j]);
+        }
+    }
+    printf("enter elements of the second matrix:\n");
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns; j++) {
+            scanf("%d", &matrix2[i][j]);
+        }
+    }
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns; j++) {
+            result[i][j] = matrix1[i][j] + matrix2[i][j];
+        }
+    }
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns; j++) {
+            printf("%d ", result[i][j]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
+_______________________________________________________________________________________________________________________________________________________________
+- Receive character by character and then place the string terminator upon pressing enter, then display the string.
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    char array[100];
+    printf("Please enter a statement: ");
+    scanf(" %99[^\n]", array);
+    printf("The statement is: %s\n", array);
+
+    return 0;
+}
+_______________________________________________________________________________________________________________________________________________________________
+- C Program to take char and displays if it is "Normal or Extended key" along with its Ascii value.
+- Highlight Menu: New Colored Menu "with Arrows"
+#include <stdio.h>
+#include <stdlib.h>
+#include <windows.h>
+#include <dos.h>
+#include <dir.h>
+
+#define right_key 77
+#define left_key 75
+#define right_key 77
+#define up_key 72
+#define down_key 80
+#define enter_key 13
+
+
+void SetColor(int ForgC) {
+    HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    WORD wColor;
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+
+    if (GetConsoleScreenBufferInfo(hStdOut, &csbi)) {
+        wColor = (csbi.wAttributes & 0xF0) + (ForgC & 0x0F);
+        SetConsoleTextAttribute(hStdOut, wColor);
+    }
+}//to change the color red or white
+
+void gotoxy(int x, int y) {
+    COORD coord = {0, 0};
+    coord.X = x; // col
+    coord.Y = y; // row
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}// to set row and column
+
+int main() {
+    char character;
+    int position = 1; // my start position
+    int totalOptions = 3; // three items that i put in minu
+
+    while (1) {
+        for (int i = 1; i <= totalOptions; i++) { // to print options
+            gotoxy(10, 10 + i);// to put them one below other 10 col 11 row
+            if (i == position) { //check position to color text
+                SetColor(4); // Red
+            } else {
+                SetColor(15); // White
+            }
+
+            switch (i) { //display minu items
+                case 1:
+                    printf("New \n \n ");
+                    break;
+                case 2:
+                    printf("Display \n \n ");
+                    break;
+                case 3:
+                    printf("Exit \n \n ");
+                    break;
+            }
+        }
+
+        character = getch(); // to know the extended characters up down and so on
+        if (character ==-32) {
+            char character1 = getch();
+            switch (character1) {
+                case up_key:
+                    if (position > 1) {// to go up we will decrement the position comparing it with first position
+                        position--;
+                    }
+                    break;
+                case down_key:
+                    if (position < totalOptions) { // to go down we will increment the position comparing it with last position
+                        position++;
+                    }
+                    break;
+            }
+        } else if (character == enter_key) { // to go to another screen
+            system("cls");
+            switch (position) {
+                case 1:
+                    gotoxy(5, 10 );
+                    printf("New");
+                    break;
+                case 2:
+                    gotoxy(5, 10 );
+                    printf("Display");
+                    break;
+                case 3:
+                    gotoxy(5, 10 );
+                    printf("Exit");
+                    break;
+            }
+            printf("\n");
+            break; // Exit the loop when Enter is pressed
+        }
+    }
+
+    return 0;
+}
+
+
+    /*if(-32==character){
+        char character1=getch();
+
+    }
+    else {
+            printf("%c is normal key \nand its ascii %d \n",character,character);
+    }
+
+    }
+*/
+
+_______________________________________________________________________________________________________________________________________________________________
+- C Program to take firstName and lastName from user, then displays fullName.
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+    char firstname[10];
+    char lastname[10];
+
+    printf("enter your first name: ");
+    scanf("%s",firstname);
+    printf("enter your last name: ");
+    scanf("%s",lastname);
+    printf("the full name is %s %s.\n",firstname,lastname);
+    return(0);
+}
+_______________________________________________________________________________________________________________________________________________________________
+- C Program to Find the Frequency of Characters in a String
+#include <stdio.h>
+#include <stdlib.h>
+
+
+int main() {
+    char string[100];
+    int count[128] = {0};
+
+    printf("enter a string: ");
+    scanf(" %s", string);
+    for (int i = 0; string[i] != '\0'; i++) {
+        count[(int)string[i]]++; // input the ascii of the character and increment when it appear
+    }
+    for (int i = 0; i < 128; i++) {
+        if (count[i] > 0) {
+            printf("'%c' appear %d times\n", (char)i, count[i]);
+        }
+    }
+
+    return 0;
+}
+_______________________________________________________________________________________________________________________________________________________________
+- C Program to Copy String Without Using strcpy()
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+    char string1[100],string2[100],i;
+    printf("Enter string one:\n");
+    scanf(" %100[^\n]", string1);
+    printf("string in array two is %s \n", string2);
+    for(i = 0; string1[i] != '\0'; i++)
+    {
+        string2[i] = string1[i];
+    }
+    printf("string in array two is %s", string2);
+    return 0;
+}
+_______________________________________________________________________________________________________________________________________________________________
+- C Program to Find the Length of a String without Using strlen()
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+    char string[100];
+    int i, length = 0;
+    printf("Enter the string: \n");
+    scanf(" %100[^\n]", string);
+    for (i = 0; string[i] != '\0'; i++)
+    {
+        length++;
+    }
+    printf("the length of %s is %d\n", string, length);
+    return 0;
+}
+_______________________________________________________________________________________________________________________________________________________________
+- C Program to Remove all Characters in a String Except Alphabet.
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+  char string[100];
+  int i , length=0;
+  printf("enter s string ");
+  scanf(" %100[^\n]", string);
+    for (i=0;string[i] != '\0';i++) //calculate length
+    {
+        length++;
+    }
+  for (int i=0;i< length;i++)
+  {
+    if (!(string[i]>='a'&& string[i]<= 'z')||(string[i]>='A'&&string[i]<= 'Z')) //insure that it not contains only alphabitic
+    {
+      for (int j=i;j<length;j++)
+      {
+        string[j]=string[j+1]; //shift letter to the left as if i remove the strange chaaracter
+      }
+      length--; //bcs we remove the strange character
+      i--; //to re check that we get letter
+    }
+  }
+  printf("the alphabetic string is  = %s\n", string);
+}
+_______________________________________________________________________________________________________________________________________________________________
+- C Program to Covert all Characters in a String to Capital Case.
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    char string[100];
+    printf("Enter a string: ");
+    scanf(" %100[^\n]", string);
+    for (int i = 0; string[i] != '\0'; i++) {
+        if (string[i] >= 'a' && string[i] <= 'z') {
+            string[i] = string[i] - ('a' - 'A'); //difference between any lower and upper is 32 so this to get uppercase
+        }
+    }
+    printf("the string in upper is : %s\n", string);
+
+    return 0;
+}
+_______________________________________________________________________________________________________________________________________________________________
