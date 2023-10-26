@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1698348988 source:d:\iti 2023_2024\c programming\labs\lab5_texteditor\main.c
+	<stdio.h>
+	<conio.h>
+	<windows.h>
+	<string.h>
+
